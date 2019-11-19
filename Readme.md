@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Даша Константинова](https://up.htmlacademy.ru/ecmascript/10/user/342129).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Андреев](https://up.htmlacademy.ru/ecmascript/10/user/812127).
 
 ---
 
