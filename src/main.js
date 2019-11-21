@@ -3,42 +3,6 @@
 const FILMS_COUNT = 5;
 const EXTRA_FILMS_COUNT = 2;
 
-const createProfileTemplate = () => (
-  `<section class="header__profile profile">
-    <p class="profile__rating">Movie Buff</p>
-    <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-  </section>`
-);
-
-const createSearchTemplate = () => (
-  `<form class="header__search search">
-    <input type="text" name="search" class="search__field" placeholder="Search movies" value="popeye">
-    <svg fill="#7171D8" class="search__film-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19">
-      <path fill-rule="nonzero" d="M2 0v4.524h2.833V0h11.334v4.524H19V0h1v19h-1v-4.524h-2.833V19H4.833v-4.524H2V19H0V0h2zm0 7.238v4.524h2.833V7.238H2zm14.167 0v4.524H19V7.238h-2.833z"/>
-    </svg>
-    <button type="submit" class="visually-hidden">Search</button>
-    <button class="search__reset" type="reset">Reset</button>
-  </form>`
-);
-
-const createSiteMenuTemplate = () => (
-  `<nav class="main-navigation">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-    <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
-  </nav>`
-);
-
-const createSortTemplate = () => (
-  `<ul class="sort">
-    <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-    <li><a href="#" class="sort__button">Sort by date</a></li>
-    <li><a href="#" class="sort__button">Sort by rating</a></li>
-  </ul>`
-);
-
 const createBoardTemplate = () => (
   `<section class="films">
     <section class="films-list">
@@ -74,10 +38,6 @@ const createFilmTemplate = () => (
       <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
     </form>
   </article>`
-);
-
-const createLoadMoreButtonTemplate = () => (
-  `<button class="films-list__show-more">Show more</button>`
 );
 
 const createPopupTemplate = () => (
@@ -236,6 +196,35 @@ const createPopupTemplate = () => (
   </section>`
 );
 
+const createSiteMenuTemplate = () => (
+  `<nav class="main-navigation">
+    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
+    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
+    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
+    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+    <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
+  </nav>`
+);
+
+const createLoadMoreButtonTemplate = () => (
+  `<button class="films-list__show-more">Show more</button>`
+);
+
+const createProfileTemplate = () => (
+  `<section class="header__profile profile">
+    <p class="profile__rating">Movie Buff</p>
+    <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
+  </section>`
+);
+
+const createSortTemplate = () => (
+  `<ul class="sort">
+    <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
+    <li><a href="#" class="sort__button">Sort by date</a></li>
+    <li><a href="#" class="sort__button">Sort by rating</a></li>
+  </ul>`
+);
+
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -243,7 +232,6 @@ const render = (container, template, place = `beforeend`) => {
 const siteMainElement = document.querySelector(`.main`);
 const HeaderElement = document.querySelector(`.header`);
 
-render(HeaderElement, createSearchTemplate());
 render(HeaderElement, createProfileTemplate());
 render(siteMainElement, createSiteMenuTemplate());
 render(siteMainElement, createSortTemplate());
