@@ -39,22 +39,24 @@ films
       (film) => render(filmsListContainerElement, createFilmTemplate(film))
   );
 
-render(filmsListElement, createLoadMoreButtonTemplate());
+if (films.length > SHOWING_FILMS_COUNT_ON_START) {
+  render(filmsListElement, createLoadMoreButtonTemplate());
 
-const loadMoreButton = filmsListElement.querySelector(`.films-list__show-more`);
+  const loadMoreButton = filmsListElement.querySelector(`.films-list__show-more`);
 
-loadMoreButton.addEventListener(`click`, () => {
-  const prevTasksCount = showingTasksCount;
-  showingTasksCount = showingTasksCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+  loadMoreButton.addEventListener(`click`, () => {
+    const prevTasksCount = showingTasksCount;
+    showingTasksCount = showingTasksCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
-  films
-    .slice(prevTasksCount, showingTasksCount)
-    .forEach((film) => render(filmsListContainerElement, createFilmTemplate(film)));
+    films
+      .slice(prevTasksCount, showingTasksCount)
+      .forEach((film) => render(filmsListContainerElement, createFilmTemplate(film)));
 
-  if (showingTasksCount >= films.length) {
-    loadMoreButton.remove();
-  }
-});
+    if (showingTasksCount >= films.length) {
+      loadMoreButton.remove();
+    }
+  });
+}
 
 const topRatingFilms = films
   .sort((film1, film2) => (film2.rating - film1.rating))
@@ -69,7 +71,7 @@ const topCommentsFilms = films
   .filter((film) => film.comments.length !== 0)
   .slice(0, EXTRA_FILMS_COUNT);
 
-if (topRatingFilms.length > 0) {
+if (topCommentsFilms.length > 0) {
   render(filmsBoardElement, createExtraFilmsTemplate(`Most commented`, topCommentsFilms));
 }
 

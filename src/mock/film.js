@@ -2,7 +2,7 @@ import {getRandomIntegerNumber} from '../utils.js';
 import {getRandomArrayItem} from '../utils.js';
 import {generateComments} from './comments.js';
 
-const FILM_NAME = [
+const FILM_NAMES = [
   `Ford V Ferrary`,
   `A beautiful day in the neighborhood`,
   `Doctor Sleep`,
@@ -41,7 +41,7 @@ const GENRES = [
   `Horror`,
   `Western`
 ];
-const POSTERS_NAME = [
+const POSTER_NAMES = [
   `made-for-each-other.png`,
   `popeye-meets-sinbad.png`,
   `sagebrush-trail.jpg`,
@@ -102,7 +102,7 @@ const ACTORS = [
   `Willem Dafoe`,
   `Valeriia Karaman`
 ];
-const MONTH = [
+const MONTHS = [
   `January`,
   `February`,
   `March`,
@@ -116,7 +116,7 @@ const MONTH = [
   `November`,
   `December`
 ];
-const COUNTRY = [
+const COUNTRIES = [
   `USA`,
   `UK`,
   `Russia`,
@@ -125,9 +125,7 @@ const COUNTRY = [
   `Ukraine`
 ];
 
-
 const generateRating = () => ((Math.random() * (10)).toFixed(1));
-
 
 const generateDuration = () => {
   const hours = getRandomIntegerNumber(0, 3);
@@ -154,26 +152,26 @@ const writersCount = getRandomIntegerNumber(1, 4);
 const actorsCount = getRandomIntegerNumber(1, 5);
 
 const generateFilm = () => ({
-  name: getRandomArrayItem(FILM_NAME),
+  name: getRandomArrayItem(FILM_NAMES),
   rating: generateRating(),
   release: {
     day: getRandomIntegerNumber(1, 30),
-    month: getRandomArrayItem(MONTH),
+    month: getRandomArrayItem(MONTHS),
     year: getRandomIntegerNumber(1980, 2019)
   },
   duration: generateDuration(),
   genres: generateGenres(),
-  poster: `./images/posters/${getRandomArrayItem(POSTERS_NAME)}`,
+  poster: `./images/posters/${getRandomArrayItem(POSTER_NAMES)}`,
   description: generateList(descriptionsCount, DESCRIPTIONS),
   comments: generateComments(getRandomIntegerNumber(0, 20)),
-  isAdd: Math.random() > 0.5,
+  isAdded: Math.random() > 0.5,
   isWatched: Math.random() > 0.5,
-  isFavorite: Math.random() > 0.5,
+  isFavored: Math.random() > 0.5,
   age: getRandomArrayItem(RESTRICTIONS),
   director: getRandomArrayItem(DIRECTORS),
   writers: generateList(writersCount, WRITERS, `, `),
   actors: generateList(actorsCount, ACTORS, `, `),
-  country: getRandomArrayItem(COUNTRY)
+  country: getRandomArrayItem(COUNTRIES)
 });
 
 export const generateFilms = (count) => (

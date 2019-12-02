@@ -1,4 +1,4 @@
-const formatDate = (date) => {
+const getFormatDate = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -20,7 +20,7 @@ const createCommentMarkup = (comment) => {
         <p class="film-details__comment-text">${text}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${formatDate(date)}</span>
+          <span class="film-details__comment-day">${getFormatDate(date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>

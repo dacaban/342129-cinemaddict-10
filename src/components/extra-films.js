@@ -1,8 +1,7 @@
 import {createFilmTemplate} from './film.js';
 
-const createFilmsListMarkup = (films) => (
-  films.map((film) => (createFilmTemplate(film))).join(``)
-);
+const createFilmsListMarkup = (films) => films.map((film) =>
+  (createFilmTemplate(film))).join(``);
 
 export const createExtraFilmsTemplate = (title, films) => (
   `<section class="films-list--extra">

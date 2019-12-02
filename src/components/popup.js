@@ -1,10 +1,9 @@
 import {createCommentsTemplate} from "./comments";
 
-const createGenresMarkup = (genres) => (
+const createGenresMarkup = (genres) =>
   genres
     .map((genre) => (`<span class="film-details__genre">${genre}</span>`))
-    .join(``)
-);
+    .join(``);
 
 export const createPopupTemplate = (film) => {
   const {
@@ -16,9 +15,9 @@ export const createPopupTemplate = (film) => {
     duration,
     genres,
     description,
-    isAdd,
+    isAdded,
     isWatched,
-    isFavorite,
+    isFavored,
     director,
     writers,
     actors,
@@ -82,11 +81,11 @@ export const createPopupTemplate = (film) => {
             </div>
           </div>
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isAdd ? `checked` : ``}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isAdded ? `checked` : ``}>
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
             <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavored ? `checked` : ``}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>

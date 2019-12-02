@@ -1,7 +1,7 @@
-const isInRange = (val, min, max = Infinity) => (val >= min && val <= max);
+const isInRange = (val, min, max = Infinity) => val >= min && val <= max;
 
-export const createProfileTemplate = (user) => {
-  let userTitle = null;
+const getUserTitle = (user) => {
+  let userTitle = ``;
   if (isInRange(user.filmsCount, 1, 10)) {
     userTitle = `Novice`;
   } else if (isInRange(user.filmsCount, 11, 20)) {
@@ -9,6 +9,11 @@ export const createProfileTemplate = (user) => {
   } else if (isInRange(user.filmsCount, 21)) {
     userTitle = `Movie Buff`;
   }
+  return userTitle;
+};
+
+export const createProfileTemplate = (user) => {
+  const userTitle = getUserTitle(user);
   return (userTitle ?
     `<section class="header__profile profile">
       <p class="profile__rating">${userTitle}</p>
