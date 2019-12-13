@@ -1,6 +1,8 @@
+import {createElement} from "../utils";
+
 const getFilmsCountByProperty = (films, property) => films.filter((film) =>film[property]).length;
 
-export const createSiteMenuTemplate = (films) => {
+const createSiteMenuTemplate = (films) => {
   const addedFilmsCount = getFilmsCountByProperty(films, `isAdded`);
   const watchedFilmsCount = getFilmsCountByProperty(films, `isWatched`);
   const favoritedFilmsCount = getFilmsCountByProperty(films, `isFavored`);
@@ -15,4 +17,21 @@ export const createSiteMenuTemplate = (films) => {
   );
 };
 
-
+export default class SiteMenu {
+  constructor(films) {
+    this._films = films;
+    this._element = null;
+  }
+  getTemplate() {
+    return createSiteMenuTemplate(this._films);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

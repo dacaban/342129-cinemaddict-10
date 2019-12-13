@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 const isInRange = (val, min, max = Infinity) => val >= min && val <= max;
 
 const getUserTitle = (user) => {
@@ -12,7 +14,7 @@ const getUserTitle = (user) => {
   return userTitle;
 };
 
-export const createProfileTemplate = (user) => {
+const createProfileTemplate = (user) => {
   const userTitle = getUserTitle(user);
   return (userTitle ?
     `<section class="header__profile profile">
@@ -22,3 +24,21 @@ export const createProfileTemplate = (user) => {
     : ``);
 };
 
+export default class Profile {
+  constructor(user) {
+    this._user = user;
+    this._element = null;
+  }
+  getTemplate() {
+    return createProfileTemplate(this._user);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
