@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 const getFormatDate = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -28,10 +30,29 @@ const createCommentMarkup = (comment) => {
   );
 };
 
-export const createCommentsTemplate = (comments) => (
+const createCommentsTemplate = (comments) => (
   `<ul class="film-details__comments-list">
     ${comments
     .map((comment) => createCommentMarkup(comment))
     .join(``)}
   </ul>`
 );
+
+export default class Comments {
+  constructor(comments) {
+    this._comments = comments;
+    this._element = null;
+  }
+  getTemplate() {
+    return createCommentsTemplate(this._comments);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,21 +1,45 @@
-import {createBoardTemplate} from './components/board.js';
-import {createFilmTemplate} from './components/film.js';
-import {createExtraFilmsTemplate} from './components/extra-films.js';
-import {createPopupTemplate} from './components/popup.js';
-import {createSiteMenuTemplate} from './components/site-menu.js';
-import {createLoadMoreButtonTemplate} from './components/load-more-button.js';
-import {createProfileTemplate} from './components/profile.js';
-import {createSortTemplate} from './components/sort.js';
+import BoardComponent from './components/board.js';
+import FilmComponent from './components/film.js';
+import ExtraFilmsComponent from './components/extra-films.js';
+import PopupComponent from './components/popup.js';
+import SiteMenuComponent from './components/site-menu.js';
+import LoadMoreButtonComponent from './components/load-more-button.js';
+import ProfileComponent from './components/profile.js';
+import SortComponent from './components/sort.js';
 import {generateFilms} from './mock/film.js';
 import {generateUser} from './mock/profile.js';
+import {RenderPosition, render} from "./utils";
 
 const FILMS_COUNT = 17;
 const EXTRA_FILMS_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+const renderFilm = (film, container) => {
+  const filmComponent = new FilmComponent(film);
+  const popupComponent = new PopupComponent(film);
+  const posterElement = filmComponent.getElement().querySelector(`.film-card__poster`);
+  const titleElement = filmComponent.getElement().querySelector(`.film-card__title`);
+  const commentsElement = filmComponent.getElement().querySelector(`.film-card__comments`);
+  const openPopup = () => render(footerElement, popupComponent.getElement(), RenderPosition.AFTEREND);
+  posterElement.addEventListener(`click`, openPopup);
+  titleElement.addEventListener(`click`, openPopup);
+  commentsElement.addEventListener(`click`, openPopup);
+
+  const closeButtonElement = popupComponent.getElement().querySelector(`.film-details__close-btn`);
+  closeButtonElement.addEventListener(`click`, () => {
+    popupComponent.getElement().remove();
+  });
+  render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+const renderExtraFilms = (films, title) => {
+  if (films.length > 0) {
+    const extraFilmComponent = new ExtraFilmsComponent(title);
+    const extraFilmContainer = extraFilmComponent.getElement().querySelector(`.films-list__container`);
+    films.map((film) => renderFilm(film, extraFilmContainer));
+    render(boardComponent.getElement(), extraFilmComponent.getElement(), RenderPosition.BEFOREEND);
+  }
 };
 
 const siteMainElement = document.querySelector(`.main`);
@@ -23,37 +47,38 @@ const HeaderElement = document.querySelector(`.header`);
 
 const user = generateUser();
 const films = generateFilms(FILMS_COUNT);
-render(HeaderElement, createProfileTemplate(user));
-render(siteMainElement, createSiteMenuTemplate(films));
-render(siteMainElement, createSortTemplate());
-render(siteMainElement, createBoardTemplate());
+render(HeaderElement, new ProfileComponent(user).getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SiteMenuComponent(films).getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-const filmsBoardElement = siteMainElement.querySelector(`.films`);
-const filmsListElement = filmsBoardElement.querySelector(`.films-list`);
+const boardComponent = new BoardComponent();
+render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+
+const filmsListElement = boardComponent.getElement().querySelector(`.films-list`);
 const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
 
 let showingTasksCount = SHOWING_FILMS_COUNT_ON_START;
 films
   .slice(0, showingTasksCount)
   .forEach(
-      (film) => render(filmsListContainerElement, createFilmTemplate(film))
+      (film) => renderFilm(film, filmsListContainerElement)
   );
 
 if (films.length > SHOWING_FILMS_COUNT_ON_START) {
-  render(filmsListElement, createLoadMoreButtonTemplate());
+  const loadMoreButtonComponent = new LoadMoreButtonComponent();
+  render(filmsListElement, loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
-  const loadMoreButton = filmsListElement.querySelector(`.films-list__show-more`);
-
-  loadMoreButton.addEventListener(`click`, () => {
+  loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
     const prevTasksCount = showingTasksCount;
     showingTasksCount = showingTasksCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
     films
       .slice(prevTasksCount, showingTasksCount)
-      .forEach((film) => render(filmsListContainerElement, createFilmTemplate(film)));
+      .forEach((film) => renderFilm(film, filmsListContainerElement));
 
     if (showingTasksCount >= films.length) {
-      loadMoreButton.remove();
+      loadMoreButtonComponent.getElement().remove();
+      loadMoreButtonComponent.removeElement();
     }
   });
 }
@@ -62,21 +87,15 @@ const topRatingFilms = films
   .sort((film1, film2) => (film2.rating - film1.rating))
   .filter((film) => film.rating !== 0)
   .slice(0, EXTRA_FILMS_COUNT);
-if (topRatingFilms.length > 0) {
-  render(filmsBoardElement, createExtraFilmsTemplate(`Top rated`, topRatingFilms));
-}
+renderExtraFilms(topRatingFilms, `Top rated`);
 
 const topCommentsFilms = films
   .sort((film1, film2) => (film2.comments.length - film1.comments.length))
   .filter((film) => film.comments.length !== 0)
   .slice(0, EXTRA_FILMS_COUNT);
-
-if (topCommentsFilms.length > 0) {
-  render(filmsBoardElement, createExtraFilmsTemplate(`Most commented`, topCommentsFilms));
-}
+renderExtraFilms(topCommentsFilms, `Most commented`);
 
 const footerElement = document.querySelector(`.footer`);
-render(footerElement, createPopupTemplate(films[0]), `afterEnd`);
 
 const statistic = footerElement.querySelector(`.footer__statistics`).querySelector(`p`);
 statistic.textContent = `${films.length} movies inside`;

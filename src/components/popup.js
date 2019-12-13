@@ -1,11 +1,12 @@
-import {createCommentsTemplate} from "./comments";
+import CommentsComponent from "./comments";
+import {createElement} from "../utils";
 
 const createGenresMarkup = (genres) =>
   genres
     .map((genre) => (`<span class="film-details__genre">${genre}</span>`))
     .join(``);
 
-export const createPopupTemplate = (film) => {
+const createPopupTemplate = (film) => {
   const {
     comments,
     poster,
@@ -92,7 +93,7 @@ export const createPopupTemplate = (film) => {
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-            ${createCommentsTemplate(comments)}
+            ${new CommentsComponent(comments).getTemplate()}
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label"></div>
               <label class="film-details__comment-label">
@@ -123,4 +124,23 @@ export const createPopupTemplate = (film) => {
     </section>`
   );
 };
+
+export default class Popup {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+  getTemplate() {
+    return createPopupTemplate(this._film);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
 
