@@ -20,9 +20,6 @@ const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 const renderFilm = (film, container) => {
   const filmComponent = new FilmComponent(film);
   const popupComponent = new PopupComponent(film);
-  const posterElement = filmComponent.getElement().querySelector(`.film-card__poster`);
-  const titleElement = filmComponent.getElement().querySelector(`.film-card__title`);
-  const commentsElement = filmComponent.getElement().querySelector(`.film-card__comments`);
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
@@ -37,12 +34,11 @@ const renderFilm = (film, container) => {
     hide(popupComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
-  posterElement.addEventListener(`click`, openPopup);
-  titleElement.addEventListener(`click`, openPopup);
-  commentsElement.addEventListener(`click`, openPopup);
+  filmComponent.setPosterClickHandler(openPopup);
+  filmComponent.setTitleClickHandler(openPopup);
+  filmComponent.setCommentsClickHandler(openPopup);
 
-  const closeButtonElement = popupComponent.getElement().querySelector(`.film-details__close-btn`);
-  closeButtonElement.addEventListener(`click`, closePopup);
+  popupComponent.setCloseButtonClickHandler(closePopup);
   render(container, filmComponent, RenderPosition.BEFOREEND);
 };
 
@@ -81,7 +77,7 @@ if (films.length === 0) {
   if (films.length > SHOWING_FILMS_COUNT_ON_START) {
     const loadMoreButtonComponent = new LoadMoreButtonComponent();
 
-    loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
+    loadMoreButtonComponent.setClickHandler(() => {
       const prevTasksCount = showingTasksCount;
       showingTasksCount = showingTasksCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
