@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const getFormatDate = (date) => {
   const year = date.getFullYear();
@@ -38,21 +38,12 @@ const createCommentsTemplate = (comments) => (
   </ul>`
 );
 
-export default class Comments {
+export default class Comments extends AbstractComponent {
   constructor(comments) {
+    super();
     this._comments = comments;
-    this._element = null;
   }
   getTemplate() {
     return createCommentsTemplate(this._comments);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }
