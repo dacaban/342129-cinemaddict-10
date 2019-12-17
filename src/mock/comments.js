@@ -1,5 +1,4 @@
-import {getRandomArrayItem} from '../utils.js';
-import {getRandomIntegerNumber} from '../utils.js';
+import {getRandomArrayItem, getRandomIntegerNumber} from '../utils/common';
 
 const EMOJI_NAMES = [
   `smile`,

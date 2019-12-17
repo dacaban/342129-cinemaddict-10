@@ -1,5 +1,5 @@
-import CommentsComponent from "./comments";
 import AbstractComponent from "./abstract-component";
+import CommentsComponent from "./comments";
 
 const createGenresMarkup = (genres) =>
   genres

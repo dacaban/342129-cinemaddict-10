@@ -10,7 +10,7 @@ import ProfileComponent from './components/profile.js';
 import SortComponent from './components/sort.js';
 import {generateFilms} from './mock/film.js';
 import {generateUser} from './mock/profile.js';
-import {RenderPosition, render} from "./utils";
+import {RenderPosition, render, remove, hide} from "./utils/render";
 
 const FILMS_COUNT = 17;
 const EXTRA_FILMS_COUNT = 2;
@@ -30,11 +30,11 @@ const renderFilm = (film, container) => {
     }
   };
   const openPopup = () => {
-    render(footerElement, popupComponent.getElement(), RenderPosition.AFTEREND);
+    render(footerElement, popupComponent, RenderPosition.AFTEREND);
     document.addEventListener(`keydown`, onEscKeyDown);
   };
   const closePopup = () => {
-    popupComponent.getElement().remove();
+    hide(popupComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
   posterElement.addEventListener(`click`, openPopup);
@@ -43,7 +43,7 @@ const renderFilm = (film, container) => {
 
   const closeButtonElement = popupComponent.getElement().querySelector(`.film-details__close-btn`);
   closeButtonElement.addEventListener(`click`, closePopup);
-  render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
+  render(container, filmComponent, RenderPosition.BEFOREEND);
 };
 
 const renderExtraFilms = (films, title) => {
@@ -51,7 +51,7 @@ const renderExtraFilms = (films, title) => {
     const extraFilmComponent = new ExtraFilmsComponent(title);
     const extraFilmContainer = extraFilmComponent.getElement().querySelector(`.films-list__container`);
     films.map((film) => renderFilm(film, extraFilmContainer));
-    render(boardComponent.getElement(), extraFilmComponent.getElement(), RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), extraFilmComponent, RenderPosition.BEFOREEND);
   }
 };
 
@@ -60,14 +60,14 @@ const HeaderElement = document.querySelector(`.header`);
 
 const user = generateUser();
 const films = generateFilms(FILMS_COUNT);
-render(HeaderElement, new ProfileComponent(user).getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SiteMenuComponent(films).getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+render(HeaderElement, new ProfileComponent(user), RenderPosition.BEFOREEND);
+render(siteMainElement, new SiteMenuComponent(films), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortComponent(), RenderPosition.BEFOREEND);
 
 const boardComponent = new BoardComponent();
 if (films.length === 0) {
   const noFilmsComponent = new NoFilmsComponent();
-  render(boardComponent.getElement(), noFilmsComponent.getElement(), RenderPosition.BEFOREEND);
+  render(boardComponent.getElement(), noFilmsComponent, RenderPosition.BEFOREEND);
 } else {
   const filmsComponent = new FilmsComponent();
   const filmsListContainerElement = filmsComponent.getElement().querySelector(`.films-list__container`);
@@ -90,15 +90,14 @@ if (films.length === 0) {
         .forEach((film) => renderFilm(film, filmsListContainerElement));
 
       if (showingTasksCount >= films.length) {
-        loadMoreButtonComponent.getElement().remove();
-        loadMoreButtonComponent.removeElement();
+        remove(loadMoreButtonComponent);
       }
     });
 
-    render(filmsComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+    render(filmsComponent.getElement(), loadMoreButtonComponent, RenderPosition.BEFOREEND);
   }
 
-  render(boardComponent.getElement(), filmsComponent.getElement(), RenderPosition.BEFOREEND);
+  render(boardComponent.getElement(), filmsComponent, RenderPosition.BEFOREEND);
 
   const topRatingFilms = films
     .sort((film1, film2) => (film2.rating - film1.rating))
@@ -112,7 +111,7 @@ if (films.length === 0) {
     .slice(0, EXTRA_FILMS_COUNT);
   renderExtraFilms(topCommentsFilms, `Most commented`);
 }
-render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
 
 const footerElement = document.querySelector(`.footer`);
 
