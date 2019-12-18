@@ -22,9 +22,9 @@ export const render = (container, component, place) => {
   }
 };
 
-export const hide = (component) => component.getElement().remove();
+export const hideElement = (component) => component.getElement().remove();
 
-export const remove = (component) => {
-  component.getElement().remove();
+export const removeElement = (component) => {
+  hideElement(component);
   component.removeElement();
 };

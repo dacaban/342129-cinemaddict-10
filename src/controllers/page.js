@@ -1,6 +1,6 @@
 import FilmComponent from "../components/film";
 import PopupComponent from "../components/popup";
-import {hide, remove, render, RenderPosition} from "../utils/render";
+import {hideElement, removeElement, render, RenderPosition} from "../utils/render";
 import ExtraFilmsComponent from "../components/extra-films";
 import NoFilmsComponent from "../components/no-films";
 import FilmsComponent from "../components/films";
@@ -25,7 +25,7 @@ const renderFilm = (filmsList, film) => {
     document.addEventListener(`keydown`, onEscKeyDown);
   };
   const closePopup = () => {
-    hide(popupComponent);
+    hideElement(popupComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
   filmComponent.setPosterClickHandler(openPopup);
@@ -77,7 +77,7 @@ export default class PageController {
           renderFilms(filmsListContainerElement, films.slice(prevTasksCount, showingTasksCount));
 
           if (showingTasksCount >= films.length) {
-            remove(loadMoreButtonComponent);
+            removeElement(loadMoreButtonComponent);
           }
         });
 
