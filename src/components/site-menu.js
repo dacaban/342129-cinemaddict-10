@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const getFilmsCountByProperty = (films, property) => films.filter((film) =>film[property]).length;
 
@@ -17,21 +17,12 @@ const createSiteMenuTemplate = (films) => {
   );
 };
 
-export default class SiteMenu {
+export default class SiteMenu extends AbstractComponent {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
   getTemplate() {
     return createSiteMenuTemplate(this._films);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,6 +1,5 @@
-import {getRandomIntegerNumber} from '../utils.js';
-import {getRandomArrayItem} from '../utils.js';
-import {generateComments} from './comments.js';
+import {getRandomIntegerNumber, getRandomArrayItem} from '../utils/common';
+import {generateComments} from './comments';
 
 const FILM_NAMES = [
   `Ford V Ferrary`,

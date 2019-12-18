@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const isInRange = (val, min, max = Infinity) => val >= min && val <= max;
 
@@ -24,21 +24,12 @@ const createProfileTemplate = (user) => {
     : ``);
 };
 
-export default class Profile {
+export default class Profile extends AbstractComponent {
   constructor(user) {
+    super();
     this._user = user;
-    this._element = null;
   }
   getTemplate() {
     return createProfileTemplate(this._user);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }
