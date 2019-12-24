@@ -101,7 +101,7 @@ const ACTORS = [
   `Willem Dafoe`,
   `Valeriia Karaman`
 ];
-const MONTHS = [
+export const MONTHS = [
   `January`,
   `February`,
   `March`,
@@ -155,7 +155,7 @@ const generateFilm = () => ({
   rating: generateRating(),
   release: {
     day: getRandomIntegerNumber(1, 30),
-    month: getRandomArrayItem(MONTHS),
+    month: getRandomIntegerNumber(0, MONTHS.length - 1),
     year: getRandomIntegerNumber(1980, 2019)
   },
   duration: generateDuration(),
