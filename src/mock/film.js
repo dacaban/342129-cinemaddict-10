@@ -153,6 +153,7 @@ const actorsCount = getRandomIntegerNumber(1, 5);
 const generateFilm = () => ({
   name: getRandomArrayItem(FILM_NAMES),
   rating: generateRating(),
+  userRating: null,
   release: {
     day: getRandomIntegerNumber(1, 30),
     month: getRandomIntegerNumber(0, MONTHS.length - 1),
