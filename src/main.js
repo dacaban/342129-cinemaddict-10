@@ -24,4 +24,3 @@ const footerElement = document.querySelector(`.footer`);
 
 const statistic = footerElement.querySelector(`.footer__statistics`).querySelector(`p`);
 statistic.textContent = `${films.length} movies inside`;
-

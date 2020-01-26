@@ -146,6 +146,14 @@ const generateGenres = () => {
     .map(() => getRandomArrayItem(GENRES));
 };
 
+const generateDate = () => {
+  const year = getRandomIntegerNumber(1980, 2019);
+  const month = getRandomIntegerNumber(0, 11);
+  const day = getRandomIntegerNumber(1, 30);
+  return new Date(year, month, day);
+};
+
+
 const descriptionsCount = getRandomIntegerNumber(1, 4);
 const writersCount = getRandomIntegerNumber(1, 4);
 const actorsCount = getRandomIntegerNumber(1, 5);
@@ -154,11 +162,7 @@ const generateFilm = () => ({
   name: getRandomArrayItem(FILM_NAMES),
   rating: generateRating(),
   userRating: null,
-  release: {
-    day: getRandomIntegerNumber(1, 30),
-    month: getRandomIntegerNumber(0, MONTHS.length - 1),
-    year: getRandomIntegerNumber(1980, 2019)
-  },
+  release: generateDate(),
   duration: generateDuration(),
   genres: generateGenres(),
   poster: `./images/posters/${getRandomArrayItem(POSTER_NAMES)}`,
