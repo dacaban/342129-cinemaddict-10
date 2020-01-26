@@ -1,10 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import CommentsComponent from "./comments";
-import {MONTHS} from "../mock/film";
-
-const getMonthName = (month) => {
-  return MONTHS[month];
-};
+import {formatDate} from "../utils/common";
 
 const createGenresMarkup = (genres) =>
   genres
@@ -116,7 +112,7 @@ const createPopupTemplate = (film, options = {}) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${release.day} ${getMonthName(release.month)} ${release.year}</td>
+                  <td class="film-details__cell">${formatDate(release)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

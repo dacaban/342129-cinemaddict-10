@@ -12,10 +12,6 @@ const EXTRA_FILMS_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
-const getDate = (date) => {
-  return new Date(date.year, date.month, date.day);
-};
-
 const renderFilms = (filmsList, films, onDataChange, onViewChange) => {
   return films
     .map(
@@ -148,7 +144,7 @@ export default class PageController {
     let sortedFilms = [];
     switch (sortType) {
       case SortType.SORT_BY_DATE:
-        sortedFilms = this._filmsByDefault.slice().sort(((a, b) => getDate(b.release) - getDate(a.release)));
+        sortedFilms = this._filmsByDefault.slice().sort(((a, b) => b.release - a.release));
         break;
       case SortType.SORT_BY_RATING:
         sortedFilms = this._filmsByDefault.slice().sort((a, b) => b.rating - a.rating);

@@ -1,15 +1,5 @@
 import AbstractComponent from "./abstract-component";
-
-const getFormatDate = (date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  return (
-    `${year}/${month}/${day} ${hours}:${minutes}`
-  );
-};
+import {formatCommentDate} from "../utils/common";
 
 const createCommentMarkup = (comment) => {
   const {emoji, text, author, date} = comment;
@@ -22,7 +12,7 @@ const createCommentMarkup = (comment) => {
         <p class="film-details__comment-text">${text}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${getFormatDate(date)}</span>
+          <span class="film-details__comment-day">${formatCommentDate(date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>
