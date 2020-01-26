@@ -33,12 +33,15 @@ const renderExtraFilms = (container, films, title, onDataChange, onViewChange) =
     const extraFilmContainer = extraFilmComponent.getElement().querySelector(`.films-list__container`);
     render(container, extraFilmComponent, RenderPosition.BEFOREEND);
     return films
-      .map((film) => {
-        const movieController = new MovieController(extraFilmContainer, onDataChange, onViewChange);
-        movieController.render(film);
-        return movieController;
-      });
+      .map(
+          (film) => {
+            const movieController = new MovieController(extraFilmContainer, onDataChange, onViewChange);
+            movieController.render(film);
+            return movieController;
+          }
+      );
   }
+  return [];
 };
 
 export default class PageController {
