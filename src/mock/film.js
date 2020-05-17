@@ -101,20 +101,7 @@ const ACTORS = [
   `Willem Dafoe`,
   `Valeriia Karaman`
 ];
-export const MONTHS = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
+
 const COUNTRIES = [
   `USA`,
   `UK`,
@@ -159,6 +146,7 @@ const writersCount = getRandomIntegerNumber(1, 4);
 const actorsCount = getRandomIntegerNumber(1, 5);
 
 const generateFilm = () => ({
+  id: String(new Date() + Math.random()),
   name: getRandomArrayItem(FILM_NAMES),
   rating: generateRating(),
   userRating: null,

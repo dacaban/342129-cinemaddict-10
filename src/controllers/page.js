@@ -41,9 +41,9 @@ const renderExtraFilms = (container, films, title, onDataChange, onViewChange) =
 };
 
 export default class PageController {
-  constructor(container) {
+  constructor(container, moviesModel) {
     this._container = container;
-    this._films = [];
+    this._moviesModel = moviesModel;
     this._filmsByDefault = [];
     this._showedFilmControllers = [];
     this._extraFilmControllers = [];
@@ -60,8 +60,9 @@ export default class PageController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
 
   }
-  render(films) {
-    this._films = films;
+  render() {
+    const films = this._moviesModel.getMovies();
+
     this._filmsByDefault = films;
 
     const container = this._container;
@@ -78,7 +79,7 @@ export default class PageController {
     const filmsComponent = this._filmsComponent.getElement();
     const filmsListContainerElement = filmsComponent.querySelector(`.films-list__container`);
 
-    const newFilms = renderFilms(filmsListContainerElement, this._films.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
+    const newFilms = renderFilms(filmsListContainerElement, films.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
 
     this._renderLoadMoreButton();
@@ -102,8 +103,14 @@ export default class PageController {
     render(container, this._boardComponent, RenderPosition.BEFOREEND);
   }
 
+  _removeFilms() {
+    // TODO: Добавить дестрой в филмконтроллер
+    this._showedFilmControllers.forEach((filmController) => filmController.destroy());
+    this._showedFilmControllers = [];
+  }
+
   _renderLoadMoreButton() {
-    if (this._showingFilmsCount >= this._films.length) {
+    if (this._showingFilmsCount >= this._moviesModel.getMovies().length) {
       return;
     }
     const container = this._filmsComponent.getElement();
@@ -113,10 +120,10 @@ export default class PageController {
 
       this._showingFilmsCount = this._showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
-      const newFilms = renderFilms(filmListElement, this._films.slice(prevFilmsCount, this._showingFilmsCount), this._onDataChange, this._onViewChange);
+      const newFilms = renderFilms(filmListElement, this._moviesModel.getMovies().slice(prevFilmsCount, this._showingFilmsCount), this._onDataChange, this._onViewChange);
       this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
 
-      if (this._showingFilmsCount >= this._films.length) {
+      if (this._showingFilmsCount >= this._moviesModel.getMovies().length) {
         removeElement(this._loadMoreButtonComponent);
       }
     });
@@ -124,15 +131,11 @@ export default class PageController {
   }
 
   _onDataChange(filmController, oldData, newData) {
-    const index = this._films.findIndex((it) => it === oldData);
-
-    if (index === -1) {
-      return;
+    const isSuccess = this._moviesModel.updateMovies(oldData.id, newData);
+    if (isSuccess) {
+      // TODO: в параметры добавить состояние фильма
+      filmController.render(newData);
     }
-
-    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
-
-    filmController.render(this._films[index]);
   }
 
   _onViewChange() {
@@ -142,19 +145,22 @@ export default class PageController {
 
   _onSortTypeChange(sortType) {
     let sortedFilms = [];
+    const films = this._moviesModel.getMovies();
     switch (sortType) {
       case SortType.SORT_BY_DATE:
-        sortedFilms = this._filmsByDefault.slice().sort(((a, b) => b.release - a.release));
+        sortedFilms = films.slice().sort(((a, b) => b.release - a.release));
         break;
       case SortType.SORT_BY_RATING:
-        sortedFilms = this._filmsByDefault.slice().sort((a, b) => b.rating - a.rating);
+        sortedFilms = films.slice().sort((a, b) => b.rating - a.rating);
         break;
       default:
-        sortedFilms = this._filmsByDefault.slice();
+        sortedFilms = films.slice(0, this._showingFilmsCount);
     }
+
+    this._removeFilms();
+    // TODO: добавить функцию рендера фильмов, удалить лишний код
     const filmsListContainerElement = this._filmsComponent.getElement().querySelector(`.films-list__container`);
     filmsListContainerElement.innerHTML = ``;
-    this._showedFilmControllers = renderFilms(filmsListContainerElement, sortedFilms.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
-    this._films = sortedFilms.slice();
+    this._showedFilmControllers = renderFilms(filmsListContainerElement, sortedFilms, this._onDataChange, this._onViewChange);
   }
 }
